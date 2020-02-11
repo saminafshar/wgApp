@@ -1,0 +1,14 @@
+{
+  "name": "wg-ui",
+  "version": "1.0.0",
+  "description": "WG-App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Samin Afshar",
+  "license": "ISC",
+  "dependencies": {
+    "@vue/cli": "^4.2.2"
+  }
+}
