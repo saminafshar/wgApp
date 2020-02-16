@@ -15,20 +15,20 @@ module.exports = {
                 throw  err;
             });
     },
-    createFlatmate: args => {
+    createFlatmate: (args, req) => {
         const flatmate = new Flatmate({
             firstname: args.flatmateInput.firstname,
             lastname: args.flatmateInput.lastname,
             birthday: args.flatmateInput.birthday,
             movedOut: null,
-            user: "5e49514ba686243a282f2195"
+            user: req.userId
         })
         let createdFlatmate;
         return flatmate
             .save()
             .then(result => {
                 createdFlatmate = transformFlatmate(result)
-                return User.findById('5e49514ba686243a282f2195');
+                return User.findById(req.userId);
             })
             .then(user => {
                 if (!user) {

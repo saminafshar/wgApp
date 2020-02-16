@@ -40,7 +40,7 @@ module.exports = {
             })
     },
     login: async ({username, password}) => {
-        const user = User.findOne({username: username});
+        const user = await User.findOne({username: username});
         if (!user) {
             throw new Error(('User does not exist'))
         }
