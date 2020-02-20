@@ -8,7 +8,6 @@
             <h3 class="ml-2">Home</h3>
             <v-spacer></v-spacer>
             <v-icon>mdi-account</v-icon>
-
         </v-app-bar>
         <v-content>
             <router-view></router-view>
