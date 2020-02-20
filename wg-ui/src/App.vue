@@ -2,7 +2,7 @@
     <v-app>
         <v-app-bar
                 clipped-left
-                app
+                apppekeke
         >
             <v-icon color="black" @click="navDrawer = !navDrawer">mdi-menu</v-icon>
             <h3 class="ml-2">Home</h3>
