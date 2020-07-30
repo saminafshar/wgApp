@@ -5,7 +5,10 @@ const User = require('../../models/user');
 
 
 module.exports = {
-    users: () => {
+    users: (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated')
+        }
         return User.find()
             .then(users => {
                 return users.map(user => {

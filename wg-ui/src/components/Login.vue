@@ -1,5 +1,8 @@
 <template>
     <v-container fluid>
+        <v-snackbar :color="snackbar.color" right top v-model="snackbar.show" :timeout="snackbar.timeout">
+            {{snackbar.text}}
+        </v-snackbar>
         <v-row>
             <v-col>
                 <v-col><h1>Login</h1></v-col>
@@ -12,11 +15,11 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="6">
-                                        <v-text-field v-model="username" label="username" outlined>
+                                        <v-text-field v-model="user.username" label="username" outlined>
                                         </v-text-field>
                                     </v-col>
                                     <v-col cols="6">
-                                        <v-text-field v-model="password" label="password" outlined>
+                                        <v-text-field v-model="user.password" label="password" outlined>
                                         </v-text-field>
                                     </v-col>
                                 </v-row>
@@ -24,8 +27,9 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" @click="createUser">Create</v-btn>
+                            <v-btn color="primary" :disabled="!user.password" @click="login">Login</v-btn>
                             <v-btn outlined color="primary">Reset</v-btn>
+                            <v-btn @click="test">get users</v-btn>
                         </v-card-actions>
                     </v-card>
 
@@ -38,52 +42,39 @@
 </template>
 
 <script>
+
+    import Restservice from "../Restservice";
+
     export default {
         name: "Login",
         data: () => ({
-            username: '',
-            password: '',
+            snackbar: {
+                show: false,
+                text: '',
+                timeout: 3000,
+                color: 'primary',
+            },
+            user: {
+                username: '',
+                password: '',
+            },
             show: false,
             message: ''
         }),
         methods: {
-            createUser() {
-                const requestBody = {
-                    query: `
-                        mutation {
-                            createUser(userInput: {username: "${this.username}", password: "${this.password}" }) {
-                                _id
-                                username
-                                password
-                            }
-                        }
-                    `
-                };
-                fetch('http://localhost:3000/graphql', {
-                    method: 'POST',
-                    body: JSON.stringify(requestBody),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+            login() {
+                this.$store.dispatch('login', this.user).then(() => {
+                    this.snackbar.show = true;
+                    this.snackbar.text = "Logged in!"
                 })
-                    .then(response => {
-                        if (response.status !== 200 && response.status !== 201) {
-                            throw new Error('Failed')
-                        }
-                        return response.json();
-
-                    })
-                    .then((responseData) => {
-                        if (responseData.errors) {
-                            this.message = responseData.errors[0].message
-                            this.show = true;
-
-                        }
-                    })
                     .catch(error => {
                         console.log(error)
                     })
-
+            },
+            test() {
+                Restservice.getUsers().then(response => {
+                    console.log(response)
+                })
             }
         }
     }

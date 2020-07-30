@@ -4,7 +4,10 @@ const User = require('../../models/user');
 const {transformComments} = require('./merge');
 
 module.exports = {
-    comments: () => {
+    comments: (req) => {
+        // if (!req.isAuth) {
+        //     throw new Error('Unauthorized')
+        // }
         return Comment.find()
             .then(comments => {
                 return comments.map(comment => {
